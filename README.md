@@ -15,7 +15,7 @@ Postman
 mongoDB
 
 
-5/27 First commit 
-    [*] create repo and read me file
-    [*] explain a little about the project, technology used, and purpose for doing it.
-    [*]Create the server and test a get request to the localhost
+5/27 First commit <br>
+    [*] create repo and read me file <br>
+    [*] explain a little about the project, technology used, and purpose for doing it. <br>
+    [*]Create the server and test a get request to the localhost <br>
