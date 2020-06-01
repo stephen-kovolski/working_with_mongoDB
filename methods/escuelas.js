@@ -1,3 +1,6 @@
+//below are the controlers of each api request.  Whatever the users decideds to do, the directions to complete the request are found in this file in the code below.
+
+
 
 //Description - Get all schoools
 //Route - GET request to /schools

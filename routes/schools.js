@@ -7,8 +7,14 @@ const {
     updateSchool, 
     deleteSchool } = require('../methods/escuelas');
 
+
+    //below is to point towards the endpoint that does NOT need an id.  basically the home route.
+
 router.route('/').get(schools).post(createSchool)
-//below is to point toward the endpoint where the id is required
+
+
+    //below is to point toward the endpoint where the id is required
+    
 router.route('/:id')
     .get(getSchool)
     .put(updateSchool)
