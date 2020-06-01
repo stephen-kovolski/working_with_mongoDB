@@ -1,19 +1,17 @@
-app.get('/', (req, res) => {
-    res.status(200).json({text: "showing all schools"})
-    res.send("home route")
-});
+const express = require('express');
+const router = express.Router()
+const { 
+    schools, 
+    getSchool, 
+    createSchool, 
+    updateSchool, 
+    deleteSchool } = require('../methods/escuelas');
 
-app.post('/', (req, res) => {
-    res.status(200).json({text: "create new school"})
-    res.send("adding a new school")
-});
+router.route('/').get(schools).post(createSchool)
+//below is to point toward the endpoint where the id is required
+router.route('/:id')
+    .get(getSchool)
+    .put(updateSchool)
+    .delete(deleteSchool)
 
-app.put('/schools/:id', (req, res) => {
-    res.status(200).json({text: `Update info on an existing school in the DB ${req.params.id}`});
-    res.send("update school info")
-});
-
-app.delete('/schools/:id', (req, res) => {
-    res.status(200).json({text: `delete an existing school in the DB ${req.params.id}`});
-    res.send("update school info")
-});
+module.exports = router; 

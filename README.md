@@ -19,3 +19,7 @@ mongoDB
     [*] create repo and read me file <br>
     [*] explain a little about the project, technology used, and purpose for doing it. <br>
     [*]Create the server and test a get request to the localhost <br>
+
+    5/31 Cleaned my code <br>
+        [*] Set up my methods and cleaned up the routes and tesed in Postman<br>
+        [*] Learned a little bit more about object destructuring<br>
