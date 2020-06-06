@@ -1,11 +1,18 @@
+
+
 const express = require('express');
 const dotenv = require('dotenv');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const schools = require('./routes/schools');
-const morgan = require('morgan');
-const mongoose = require('mongoose');
+const connectDB = require('./db');
+const colors = require('colors');
+dotenv.config({ path: './.env'});
+const server = app.listen(PORT, console.log(`listening on port ${PORT}`.magenta.bold)); 
 
+
+
+connectDB();
 
     // custom middleware that is now being handled by the moragan dependancy
 //const logger = require('./middleware/logger');
@@ -25,6 +32,11 @@ const mongoose = require('mongoose');
 
 app.use('/schools', schools)
 
-    //makes the app listen on the port I have choosem.  The variable for PORT is located in teh env file to keep it private from the public. 
+//Here I am going to handle the unhandled promise rejections.  If I get any errors I want the server to close.
+process.on('unHandledRejection', (err, promise) => {
+    console.log(`Error: ${err.message}`.red.italic);
 
-app.listen(PORT, console.log(`listening on port ${PORT}`)); 
+    //below closes the server
+    server.close(() => process.exit(1))
+    
+})
