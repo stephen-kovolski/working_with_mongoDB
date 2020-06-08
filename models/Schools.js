@@ -1,4 +1,4 @@
-const mongoose = require('mongoose'),
+const mongoose = require('mongoose');
 const SchoolsSchema = new mongoose.Schema({
 
     name: {
@@ -47,12 +47,10 @@ const SchoolsSchema = new mongoose.Schema({
         type: {
             type: String,
             enum: ['Point'],  //the only value this can take is a point becassue we are dropping a point based on 'coordinates', the next one in the list.
-            required: true,
         },
 
         coordinates: {
             type:[Number],
-            required: true,
             index: '2dsphere'
         },
 
@@ -90,7 +88,7 @@ const SchoolsSchema = new mongoose.Schema({
         },
 
         housing: {
-            type: Booloean,
+            type: Boolean,
             default: false
         },
 

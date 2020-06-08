@@ -18,6 +18,11 @@ connectDB();
 //const logger = require('./middleware/logger');
 
 
+    //Body Parser
+app.use(express.json());
+
+
+
     //middleware
     //all of my middleware will take in (req, res, next)
     //next() must be called in middleware so it knows to move on to the next piece of middleware in the cycle

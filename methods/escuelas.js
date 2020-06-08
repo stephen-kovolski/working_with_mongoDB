@@ -1,15 +1,25 @@
 //below are the controlers of each api request.  Whatever the users decideds to do, the directions to complete the request are found in this file in the code below.
 
-
+const Schools = require('../models/Schools')
 
 //Description - Get all schoools
 //Route - GET request to /schools
 //Acess - public
 
-exports.schools = (req, res, next) => {
-    res.status(200).json({text: "showing all schools"})
+exports.schools = async (req, res, next) => {
 
-}
+    try {
+        const schools = await Schools.find();
+
+        res.status(200).json({success: true, count: schools.length, data: schools})
+    } catch (err) {
+        res.status(400).json({success: false})
+    }
+
+};
+
+
+
 
 
 
@@ -17,11 +27,21 @@ exports.schools = (req, res, next) => {
 //Route - GET request to /schools/:id
 //Acess - public
 
-exports.getSchool = (req, res, next) => {
-    res.status(200).json({text: ''})
+exports.getSchool = async (req, res, next) => {
+
+    try {
+        const school = await Schools.findById(req.params.id);
+            if (!school) {
+              return res.status(400).json({success:false})
+            }
+        res.status(200).json({success: true, data: school})
+    } catch (err) {
+        res.status(400).json({success: false})
+    }
 
 }
 
+    
 
 
 
@@ -29,19 +49,47 @@ exports.getSchool = (req, res, next) => {
 //Route - POST a new school to /schools
 //Acess - private
 
-exports.createSchool = (req, res, next) => {
-    res.status(200).json({text: "create new school"})
+exports.createSchool = async (req, res, next) => {
+    try{
+    const schools = await Schools.create(req.body);
 
+
+    res.send(201).json({
+        success: true,
+        data: schools
+    });
+    } catch (err) {
+    res.status(400).json({success: false, err: err.message})
+    }   
+    
 }
 
 //Description - Update a schoool
 //Route - PUT to /schools:id
 //Acess - private
 
-exports.updateSchool = (req, res, next) => {
-    res.status(200).json({text: `Update info on an existing school in the DB ${req.params.id}`});
+exports.updateSchool = async (req, res, next) => {
 
+    try {
+
+        const school = await Schools.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true
+        })
+    
+        if (!school) {
+            return res.status(400).json({success: false});
+        }
+            res.status(200).json({ success: true, data: school})        
+        
+    } catch (err) {
+         res.status(400).json({success: false});
+
+    }
+
+    
 }
+
 
 
 
@@ -49,8 +97,20 @@ exports.updateSchool = (req, res, next) => {
 //Route - DELETE a school at route /schools:id
 //Acess - private
 
-exports.deleteSchool = (req, res, next) => {
-    res.status(200).json({text: `delete an existing school in the DB ${req.params.id}`});
+exports.deleteSchool =  async (req, res, next) => {
 
+    try {
+
+        const school = await Schools.findByIdAndDelete(req.params.id)
+    
+        if (!school) {
+            return res.status(400).json({success: false});
+        }
+            res.status(200).json({ success: true, data: {}})        
+        
+    } catch (err) {
+         res.status(400).json({success: false});
+
+    }
 }
 
