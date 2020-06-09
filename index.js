@@ -6,6 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const schools = require('./routes/schools');
 const connectDB = require('./db');
+const errorHandler = require('./middleware/error')
 const colors = require('colors');
 dotenv.config({ path: './.env'});
 const server = app.listen(PORT, console.log(`listening on port ${PORT}`.magenta.bold)); 
@@ -16,6 +17,7 @@ connectDB();
 
     // custom middleware that is now being handled by the moragan dependancy
 //const logger = require('./middleware/logger');
+
 
 
     //Body Parser
@@ -36,6 +38,10 @@ app.use(express.json());
     //mount routers.  THis allows me to not have to write out all of the nedpoints in the schools.js file.  I can condense it down to '/:id'  line 9 makes the prgoram assume the '/schools' is included before it adds the    '/:id"
 
 app.use('/schools', schools)
+
+app.use(errorHandler);
+
+
 
 //Here I am going to handle the unhandled promise rejections.  If I get any errors I want the server to close.
 process.on('unHandledRejection', (err, promise) => {

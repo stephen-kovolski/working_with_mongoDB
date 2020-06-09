@@ -1,5 +1,5 @@
 //below are the controlers of each api request.  Whatever the users decideds to do, the directions to complete the request are found in this file in the code below.
-
+const ErrorResponse = require('../utilities/errorResponse')
 const Schools = require('../models/Schools')
 
 //Description - Get all schoools
@@ -13,7 +13,7 @@ exports.schools = async (req, res, next) => {
 
         res.status(200).json({success: true, count: schools.length, data: schools})
     } catch (err) {
-        res.status(400).json({success: false})
+        next(err)
     }
 
 };
@@ -27,16 +27,18 @@ exports.schools = async (req, res, next) => {
 //Route - GET request to /schools/:id
 //Acess - public
 
-exports.getSchool = async (req, res, next) => {
+exports.getSchoolById = async (req, res, next) => {
 
     try {
         const school = await Schools.findById(req.params.id);
             if (!school) {
-              return res.status(400).json({success:false})
+              return next(new ErrorResponse(`School not found with id of ${req.params.id}`, 404)); 
+
             }
         res.status(200).json({success: true, data: school})
     } catch (err) {
-        res.status(400).json({success: false})
+        next(err)
+
     }
 
 }
@@ -59,7 +61,7 @@ exports.createSchool = async (req, res, next) => {
         data: schools
     });
     } catch (err) {
-    res.status(400).json({success: false, err: err.message})
+        next(err)
     }   
     
 }
@@ -78,13 +80,13 @@ exports.updateSchool = async (req, res, next) => {
         })
     
         if (!school) {
-            return res.status(400).json({success: false});
+            return next(new ErrorResponse(`School not found with id of ${req.params.id}`, 404)); 
+
         }
             res.status(200).json({ success: true, data: school})        
         
     } catch (err) {
-         res.status(400).json({success: false});
-
+        next(err)
     }
 
     
@@ -104,13 +106,12 @@ exports.deleteSchool =  async (req, res, next) => {
         const school = await Schools.findByIdAndDelete(req.params.id)
     
         if (!school) {
-            return res.status(400).json({success: false});
+            return next(new ErrorResponse(`School not found with id of ${req.params.id}`, 404)); 
         }
             res.status(200).json({ success: true, data: {}})        
         
     } catch (err) {
-         res.status(400).json({success: false});
-
+        next(err)
     }
 }
 
