@@ -46,7 +46,7 @@ exports.getSchoolById = asyncHandler(async (req, res, next) => {
 exports.createSchool = asyncHandler(async (req, res, next) => {
     const schools = await Schools.create(req.body);
 
-    res.send(201).json({
+    res.status(201).json({
         success: true,
         data: schools
     });
@@ -78,7 +78,7 @@ exports.updateSchool = asyncHandler(async (req, res, next) => {
 
 
 //Description - Deete a schoool
-//Route - DELETE a school at route /schools:id
+//Route - DELETE a school at route /schools/:id
 //Acess - private
 
 exports.deleteSchool =  asyncHandler(async (req, res, next) => {

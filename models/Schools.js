@@ -1,4 +1,8 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
+const geocoder = require('../utilities/geocoder');
+
+
 const SchoolsSchema = new mongoose.Schema({
 
     name: {
@@ -111,15 +115,40 @@ const SchoolsSchema = new mongoose.Schema({
             type:Date,
             default: Date.now
         }
-
-
-
     },
 
-    
-
-
-
 });
+
+
+    // Create school slug from the name
+SchoolsSchema.pre('save', function(next) {
+    this.slug = slugify(this.name, { lower: true });
+    next();
+});
+
+
+    //Geocode & create location field
+SchoolsSchema.pre('save', async function(next) {
+
+    const location = await geocoder.geocode(this.address);
+
+    this.location = {
+        type: 'Point',
+        coordinates: [location[0].longitude, location[0].latitude],
+        formattedAddress: location[0].formattedAddress,
+        street: location[0].streetName,
+        city: location[0].city,
+        state: location[0].state,
+        zipcode: location[0].zipcode,
+        country: location[0].countryCode
+
+    }
+
+    // do not save address in db
+    this.address = undefined;
+
+    next()
+})
+
 
 module.exports = mongoose.model('Schools', SchoolsSchema);

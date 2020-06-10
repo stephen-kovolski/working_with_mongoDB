@@ -1,15 +1,15 @@
+const dotenv = require('dotenv');
+dotenv.config({ path: './.env'});
 
 
 const express = require('express');
-const dotenv = require('dotenv');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const schools = require('./routes/schools');
 const connectDB = require('./db');
 const errorHandler = require('./middleware/error')
 const colors = require('colors');
-dotenv.config({ path: './.env'});
-const server = app.listen(PORT, console.log(`listening on port ${PORT}`.magenta.bold)); 
+const server = app.listen(PORT, console.log(`listening on port ${PORT}`.magenta.bold));  
 
 
 
